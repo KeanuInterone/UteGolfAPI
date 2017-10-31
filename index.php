@@ -1,5 +1,5 @@
 <?php
 
-echo("Welcome to UteGolf");
+echo("Welcome to UteGolf, This is an API");
 
 ?>
