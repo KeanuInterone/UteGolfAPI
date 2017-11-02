@@ -1,16 +1,24 @@
 <?php
-include_once("../Event.php");
+include_once("../Round.php");
 
 
 if($_SERVER['REQUEST_METHOD'] == "GET") {
     
-    if(!empty($_GET["EventID"])) {
-        $rounds = Event::GetEventRounds($_GET["EventID"]);
-        echo json_encode($rounds); 
+    
+    // Get round with round id
+    if(!empty($_GET["id"])) {
+        $round = Round::GetRoundWithID($_GET["id"]);
+        echo json_encode($round);
     }
-    else if(!empty($_GET["UserID"]) && !empty($_GET["RoundID"])) {
-        $roundScore = Event::GetRoundScore($_GET["UserID"], $_GET["RoundID"]);
-        echo json_encode($roundScore);
+    // Get rounds for event
+    else if(!empty($_GET["eventid"])) {
+        $rounds = Round::GetRoundsWithEventID($_GET["eventid"]);
+        echo json_encode($rounds);
+    }
+    // Get all rounds
+    else {
+        $rounds = Round::GetAllRounds();
+        echo json_encode($rounds);
     }
 }
 

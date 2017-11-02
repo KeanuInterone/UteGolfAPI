@@ -171,28 +171,6 @@ class Event {
         
     }
     
-    public static function GetEventRounds($EventID)
-    {
-        $connection = DatabaseConnection::getConnection();
-        $query = "SELECT * "
-                . "FROM Rounds r "
-                . "WHERE r.EventID = {$EventID};";
-        
-        $result = $connection->query($query);
-        $connection->close();
-        
-        if ($result->num_rows > 0) {
-            $rounds = array();
-            while($row = $result->fetch_assoc()) {
-                array_push($rounds, $row);
-            }
-            return $rounds;
-        } 
-        else {
-                return null;
-        }
-    }
-    
     public static function RecordScore($UserID, $RoundID, $Score)
     {
         $connection = DatabaseConnection::getConnection();
