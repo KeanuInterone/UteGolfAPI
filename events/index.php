@@ -4,16 +4,27 @@ include_once("../Event.php");
 
 if($_SERVER['REQUEST_METHOD'] == "GET") {
     
-    if(!empty($_GET["eventid"])) {
-        $event = Event::GetEventWithID($_GET["eventid"]);
+    if(!empty($_GET["id"])) {
+        $event = Event::GetEventWithID($_GET["id"]);
         echo json_encode($event);
     }
-    else if(!empty($_GET["userid"]) && !empty($_GET["upcommingandjoined"])) {
-        $events = Event::GetUpcommingAndJoinedEventsForUserID($_GET["userid"]);
+    // Upcomming and Joined
+    else if(!empty($_GET["userid"]) && !empty($_GET["upcomingandjoined"])) {
+        $events = Event::GetUpcomingAndJoinedEventsWithUserID($_GET["userid"]);
+        echo json_encode($events);        
+    }
+    // Upcomming, Joined and Past
+    else if(!empty($_GET["userid"]) && !empty($_GET["allevents"])) {
+        $events = Event::GetAllEventsWithUserID($_GET["userid"]);
+        echo json_encode($events); 
+    }
+    // Completed
+    else if(!empty($_GET["userid"]) && !empty($_GET["completed"])) {
+        $events = Event::GetCompletedEventsWithUserID($_GET["userid"]);
         echo json_encode($events); 
     }
     else if(!empty($_GET["userid"])) {
-        $events = Event::GetEventsForUserWithID($_GET["userid"]);
+        $events = Event::GetEventsWithUserID($_GET["userid"]);
         echo json_encode($events);
     }
     else {
@@ -23,6 +34,8 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 }
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
+    
+    
     	$UserID = $_POST["userid"];
 	$EventID = $_POST["eventid"];
         $EntryFee = $_POST["entryfee"];

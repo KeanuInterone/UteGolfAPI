@@ -48,11 +48,11 @@ class Event {
         }
     }
     
-    public static function GetEventsForUserWithID($UserID) {
+    public static function GetEventsWithUserID($UserID) {
         
         $connection = DatabaseConnection::getConnection();
         
-        $query = "SELECT u.HasCompleted, e.EventID, e.IsOpen, e.EventName, e.EntryFee "
+        $query = "SELECT e.EventID, e.IsOpen, e.EventName, e.EntryFee, u.HasCompleted "
                 . "FROM UserEvents u "
                 . "    INNER JOIN Events e "
                 . "        ON u.EventID = e.EventID "
@@ -69,21 +69,22 @@ class Event {
             return $events;
         } 
         else {
-                return null;
+            return null;
         }
         
     }
 
-    public static function GetUpcommingAndJoinedEventsForUserID($UserID) {
+    public static function GetUpcomingAndJoinedEventsWithUserID($UserID) {
         $connection = DatabaseConnection::getConnection();
-        $query = "SELECT e.EventID, e.EventName, e.EntryFee, u.UserID
-                  FROM Events e 
-                    LEFT JOIN UserEvents u
-                        ON ((e.EventID = u.EventID)
-                            AND (u.UserID = {$UserID})
-                            AND (u.HasCompleted = 0))    
-                  WHERE e.IsOpen = 1;";
         
+        $query = "SELECT e.EventID, e.IsOpen, e.EventName, e.EntryFee, u.HasCompleted "
+                . "FROM Events e "
+                . "     LEFT JOIN UserEvents u "
+                . "         ON ((e.EventID = u.EventID) "
+                . "         AND (u.UserID = {$UserID}) "
+                . "         AND (u.HasCompleted = 0)) "
+                . "WHERE e.IsOpen = 1;";
+
         $result = $connection->query($query);
         $connection->close();
         
@@ -95,9 +96,57 @@ class Event {
             return $events;
         } 
         else {
-                return null;
-        }
+            return null;
+        } 
+    }
+    
+    public static function GetAllEventsWithUserID($UserID) {
+                $connection = DatabaseConnection::getConnection();
         
+        $query = "SELECT e.EventID, e.IsOpen, e.EventName, e.EntryFee, u.HasCompleted "
+                . "FROM Events e "
+                . "     LEFT JOIN UserEvents u "
+                . "         ON ((e.EventID = u.EventID) "
+                . "         AND (u.UserID = {$UserID}));";
+
+        $result = $connection->query($query);
+        $connection->close();
+        
+        if ($result->num_rows > 0) {
+            $events = array();
+            while($row = $result->fetch_assoc()) {
+                array_push($events, $row);
+            }
+            return $events;
+        } 
+        else {
+            return null;
+        }
+    }
+    
+        public static function GetCompletedEventsWithUserID($UserID) {
+        $connection = DatabaseConnection::getConnection();
+        
+        $query = "SELECT e.EventID, e.IsOpen, e.EventName, e.EntryFee, u.HasCompleted "
+                . "FROM Events e "
+                . "     INNER JOIN UserEvents u "
+                . "         ON ((e.EventID = u.EventID) "
+                . "         AND (u.UserID = {$UserID}) "
+                . "         AND (u.HasCompleted = 1));";
+
+        $result = $connection->query($query);
+        $connection->close();
+        
+        if ($result->num_rows > 0) {
+            $events = array();
+            while($row = $result->fetch_assoc()) {
+                array_push($events, $row);
+            }
+            return $events;
+        } 
+        else {
+            return null;
+        } 
     }
     
     public static function UserJoinedEvent($UserID, $EventID, $EntryFee) {

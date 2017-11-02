@@ -3,8 +3,8 @@ include_once("../User.php");
 
 if($_SERVER['REQUEST_METHOD'] == "GET") {
     
-    if(!empty($_GET["userid"])) {
-        $user = User::GetUserWithID($_GET["userid"]);
+    if(!empty($_GET["id"])) {
+        $user = User::GetUserWithID($_GET["id"]);
         echo json_encode($user); 
     } 
     else {
