@@ -10,6 +10,11 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
         $round = Round::GetRoundWithID($_GET["id"]);
         echo json_encode($round);
     }
+    // Get rounds for event with user scores
+    else if(!empty($_GET["eventid"]) && !empty($_GET["userid"])) {
+        $rounds = Round::GetRoundsWithScoresWithIDs($_GET["eventid"], $_GET["userid"]);
+        echo json_encode($rounds);
+    }
     // Get rounds for event
     else if(!empty($_GET["eventid"])) {
         $rounds = Round::GetRoundsWithEventID($_GET["eventid"]);

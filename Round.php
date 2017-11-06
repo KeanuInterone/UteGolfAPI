@@ -67,5 +67,32 @@ class Round {
         } 
     }
     
+    
+    public static function GetRoundsWithScoresWithIDs($EventID, $UserID) {
+        
+        $connection = DatabaseConnection::getConnection();
+        
+        $query = "SELECT r.RoundID, r.EventID, r.RoundName, r.RoundDate, r.Location, s.Score "
+                . "FROM Rounds r "
+                . "     LEFT JOIN Scores s "
+                . "         ON ((r.RoundID = s.RoundID) "
+                . "         AND (s.UserID = {$UserID})) "
+                . "WHERE r.EventID = {$EventID};";
+        
+        $result = $connection->query($query);
+        $connection->close();
+        
+        // collet the data we get back
+        if ($result->num_rows > 0) {
+            $rounds = array();
+            while($row = $result->fetch_assoc()) {
+                array_push($rounds, $row);
+            }
+            return $rounds;
+        } 
+        else {
+            return null;
+        } 
+    } 
 }
 
