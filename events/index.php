@@ -36,14 +36,14 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     
     
-    	$UserID = $_POST["userid"];
-	$EventID = $_POST["eventid"];
-        $EntryFee = $_POST["entryfee"];
-        
-        if(Event::UserJoinedEvent($UserID, $EventID, $EntryFee)) {
+    if(!empty($_POST["userid"]) && !empty($_POST["eventid"]) && !empty($_POST["entryfee"])) {
+        if(Event::UserJoinedEvent($_POST["userid"], $_POST["eventid"], $_POST["entryfee"])) {
             echo "Success";
         }
         else {
             echo 'Failure';
         }
+    }
+        
+        
 }

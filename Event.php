@@ -149,6 +149,24 @@ class Event {
         } 
     }
     
+    public static function AddEvent($EventName, $EntryFee) {
+        
+        $connection = DatabaseConnection::getConnection();
+        
+        $query = "INSERT into Events(EventName, EntryFee) "
+                . "VALUES('{$EventName}', {$EntryFee});";
+        
+        if ($connection->query($query)) {
+            $connection->close();
+            return true;
+        }
+        else {
+            $connection->close();
+            return false;
+        } 
+        
+    }
+    
     public static function UserJoinedEvent($UserID, $EventID, $EntryFee) {
         
         $connection = DatabaseConnection::getConnection();
