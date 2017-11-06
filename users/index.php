@@ -13,7 +13,22 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
     }
 }
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-
-	$user = User::Login($_POST["username"], $_POST["password"]);
-	echo json_encode($user);
+    
+    if(!empty($_POST["isadmin"]) && !empty($_POST["firstname"]) && !empty($_POST["lastname"]) && !empty($_POST["login"]) && !empty($_POST["password"])) {
+        $isAdminBool = false;
+        if($_POST["isadmin"] == "true") {
+            $isAdminBool = true;
+        }
+        if(User::AddUser($isAdminBool, $_POST["firstname"], $_POST["lastname"], $_POST["login"], $_POST["password"])) {
+            echo "Success";
+        }
+        else {
+            echo "Failure";
+        }
+    }
+    else if(!empty($_POST["username"]) && !empty($_POST["password"])) {
+        $user = User::Login($_POST["username"], $_POST["password"]);
+        echo json_encode($user);
+    }
+    
 }
