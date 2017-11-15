@@ -27,15 +27,3 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
     }
 }
 
-if($_SERVER['REQUEST_METHOD'] == "POST") {
-    	
-    $UserID = $_POST["UserID"];
-    $RoundID = $_POST["RoundID"];
-    $Score = $_POST["Score"];
-        
-    if(Event::RecordScore($UserID, $RoundID, $Score)) {
-        echo "Success";
-        
-    }        
-}
-

@@ -22,3 +22,18 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
     }
 }
 
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+    
+    // record a score
+    if(!empty($_POST["userid"]) && !empty($_POST["roundid"]) && !empty($_POST["score"])) {
+        if(Score::RecordScore($_POST["userid"], $_POST["roundid"], $_POST["score"])) {
+            echo "Success";
+        }
+        else {
+            echo 'Failure';
+        }
+    }
+        
+        
+}
+

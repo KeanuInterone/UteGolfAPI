@@ -72,7 +72,7 @@ class Round {
         
         $connection = DatabaseConnection::getConnection();
         
-        $query = "SELECT r.RoundID, r.EventID, r.RoundName, r.RoundDate, r.Location, s.Score "
+        $query = "SELECT r.RoundID, r.EventID, r.RoundName, r.RoundDate, r.Location, s.ScoreID, s.Score "
                 . "FROM Rounds r "
                 . "     LEFT JOIN Scores s "
                 . "         ON ((r.RoundID = s.RoundID) "

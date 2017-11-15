@@ -149,7 +149,7 @@ class Event {
         } 
     }
     
-    public static function AddEvent($EventName, $EntryFee) {
+    public static function CreateEvent($EventName, $EntryFee) {
         
         $connection = DatabaseConnection::getConnection();
         
@@ -167,7 +167,7 @@ class Event {
         
     }
     
-    public static function UserJoinedEvent($UserID, $EventID, $EntryFee) {
+    public static function UserJoinedEvent($UserID, $EventID) {
         
         $connection = DatabaseConnection::getConnection();
         
@@ -175,7 +175,7 @@ class Event {
                 . "VALUES({$UserID}, {$EventID}); "
                 . ""
                 . "UPDATE Users u "
-                . "SET u.UtePoints = u.UtePoints - {$EntryFee} "
+                . "SET u.UtePoints = u.UtePoints - (SELECT EntryFee FROM Events WHERE EventID = {$EventID}) "
                 . "WHERE u.UserID = {$UserID};";
         
         if ($connection->multi_query($query)) {
@@ -187,44 +187,6 @@ class Event {
             return false;
         } 
         
-    }
-    
-    public static function RecordScore($UserID, $RoundID, $Score)
-    {
-        $connection = DatabaseConnection::getConnection();
-        
-        $query = "INSERT INTO Score(UserID, RoundID, Score) "
-                . "VALUES({$UserID},{$RoundID},{$Score}); "
-                . "";
-        
-        $connection->query($query);        
-        $connection->close();
-        
-        // need to see if the user has completed all the rounds
-        // do this by finding the count of rounds for that event 
-        // matches the count of rounds that are scored by that user
-        
-        return true;
-    }
-    
-    public static function GetRoundScore($UserID, $RoundID)
-    {
-        $connection = DatabaseConnection::getConnection();
-        $query = "SELECT * "
-                . "FROM Score s "
-                . "WHERE s.UserID = {$UserID} "
-                . "AND s.RoundID = {$RoundID};";
-        
-        $result = $connection->query($query);
-        $connection->close();
-        
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return $row;
-        } 
-        else {
-                return null;
-        }
     }
     
 }

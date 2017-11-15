@@ -64,4 +64,22 @@ class Score {
             return null;
         }
     }
+    
+    public static function RecordScore($UserID, $RoundID, $Score) {
+        
+        $connection = DatabaseConnection::getConnection();
+        
+        $query = "INSERT into Scores(UserID, RoundID, Score) "
+                . "VALUES({$UserID}, {$RoundID}, {$Score});";
+        
+        if ($connection->query($query)) {
+            $connection->close();
+            return true;
+        }
+        else {
+            $connection->close();
+            return false;
+        } 
+        
+    }
 }

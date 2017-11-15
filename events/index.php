@@ -35,9 +35,18 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     
-    
-    if(!empty($_POST["userid"]) && !empty($_POST["eventid"]) && !empty($_POST["entryfee"])) {
-        if(Event::UserJoinedEvent($_POST["userid"], $_POST["eventid"], $_POST["entryfee"])) {
+    // create an event
+    if(!empty($_POST["eventname"]) && !empty($_POST["entryfee"])) {
+        if(Event::CreateEvent($_POST["eventname"], $_POST["entryfee"])) {
+            echo "Success";
+        }
+        else {
+            echo 'Failure';
+        }
+    }
+    // joins user to event and takes out fee of users ute points
+    else if(!empty($_POST["userid"]) && !empty($_POST["eventid"])) {
+        if(Event::UserJoinedEvent($_POST["userid"], $_POST["eventid"])) {
             echo "Success";
         }
         else {
